@@ -208,3 +208,112 @@ func CheckPair(c *CardCombination) int {
         }
         return -1
 }
+
+func Showdown(hero *HandValue, vill *HandValue) int {
+        if hero.Value > vill.Value {
+                return WIN
+        } else if hero.Value < vill.Value {
+                return LOSE
+        }
+
+        switch hero.Value {
+        case STRAIGHT_FLUSH, STRAIGHT:
+                if hero.Straight < vill.Straight {
+                        return WIN
+                } else if hero.Straight > vill.Straight {
+                        return LOSE
+                } else {
+                        return TIE
+                }
+        case QUADS:
+                if hero.Quads < vill.Quads {
+                        return WIN
+                } else if hero.Quads > vill.Quads {
+                        return LOSE
+                } else {
+                        if hero.HighCard[0] < vill.HighCard[0] {
+                                return WIN
+                        } else if hero.HighCard[0] > vill.HighCard[0] {
+                                return LOSE
+                        } else {
+                                return TIE
+                        }
+                }
+        case FULL_HOUSE:
+                if hero.Trips < vill.Trips {
+                        return WIN
+                } else if hero.Trips > vill.Trips {
+                        return LOSE
+                } else {
+                        if hero.HighPair < vill.HighPair {
+                                return WIN
+                        } else if hero.HighPair > vill.HighPair {
+                                return LOSE
+                        } else {
+                                return TIE
+                        }
+                }
+        case FLUSH, HIGH_CARD:
+                for i := 0; i < 5; i += 1 {
+                        if hero.HighCard[i] < vill.HighCard[i] {
+                                return WIN
+                        } else if hero.HighCard[i] > vill.HighCard[i] {
+                                return LOSE
+                        }
+                }
+                return TIE
+        case TRIPS:
+                if hero.Trips < vill.Trips {
+                        return WIN
+                } else if hero.Trips > vill.Trips {
+                        return LOSE
+                } else {
+                        for i := 0; i < 2; i += 1 {
+                                if hero.HighCard[i] < vill.HighCard[i] {
+                                        return WIN
+                                } else if hero.HighCard[i] > vill.HighCard[i] {
+                                        return LOSE
+                                }
+                        }
+                        return TIE
+                }
+        case TWO_PAIRS:
+                if hero.HighPair < vill.HighPair {
+                        return WIN
+                } else if hero.HighPair > vill.HighPair {
+                        return LOSE
+                } else {
+                        if hero.LowPair < vill.LowPair {
+                                return WIN
+                        } else if hero.LowPair > vill.LowPair {
+                                return LOSE
+                        } else {
+                                if hero.HighCard[0] < vill.HighCard[0] {
+                                        return WIN
+                                } else if hero.HighCard[0] > vill.HighCard[0] {
+                                        return LOSE
+                                } else {
+                                        return TIE
+                                }
+                        }
+                }
+        case PAIR:
+                if hero.HighPair < vill.HighPair {
+                        return WIN
+                } else if hero.HighPair > vill.HighPair {
+                        return LOSE
+                } else {
+                        for i := 0; i < 3; i += 1 {
+                                if hero.HighCard[i] < vill.HighCard[i] {
+                                        return WIN
+                                } else if hero.HighCard[i] > vill.HighCard[i] {
+                                        return LOSE
+                                }
+                        }
+                        return TIE
+                }
+        }
+        panic("Can't compare hand values")
+        return -1
+}
+

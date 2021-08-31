@@ -42,6 +42,12 @@ const (
         RIVER = 5
 )
 
+const (
+        WIN  = iota
+        TIE
+        LOSE
+)
+
 var CardRankShortName = []rune {
         'A',
         'K',

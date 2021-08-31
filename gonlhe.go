@@ -10,7 +10,8 @@ func main () {
         rand.Seed(time.Now().UnixNano())
         //test_input()
         //test_random_card()
-        test_random()
+        //test_random()
+        test_showdown()
 }
 
 func test_input() {
@@ -47,5 +48,44 @@ func test_random() {
                 fmt.Printf("I was dealt %s on %s board\n", h.GetShortName(), b.GetShortName())
                 hv := EvalHand(h, b, RIVER)
                 fmt.Printf("\t%s\n", hv.GetName())
+        }
+}
+
+func test_showdown() {
+        d := NewDeck()
+        for i := 0; i < 5; i += 1 {
+                if i > 0 {
+                        d.Reset()
+                }
+                hh, err := InputHand()
+                if err != nil {
+                        fmt.Println("You're not serious, bye")
+                        return
+                }
+                hh.Remove(d)
+
+                vh := d.GetRandomHand()
+                b  := d.GetRandomBoard()
+
+                hero := EvalHand(hh, b, RIVER)
+                vill := EvalHand(vh, b, RIVER)
+
+                r := Showdown(hero, vill)
+
+                fmt.Printf("Hero hand: %s\n", hh.GetShortName())
+                fmt.Printf("Villain hand: %s\n", vh.GetShortName())
+                fmt.Printf("Board runs: %s\n", b.GetShortName())
+                fmt.Printf("Hero has %s\n", hero.GetName())
+                fmt.Printf("Villain has %s\n", vill.GetName())
+
+                switch r {
+                case WIN:
+                        fmt.Println("Hero wins")
+                case LOSE:
+                        fmt.Println("Hero loses")
+                case TIE:
+                        fmt.Println("Hero chops")
+                }
+                fmt.Println("---------")
         }
 }

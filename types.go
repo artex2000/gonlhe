@@ -1,19 +1,19 @@
 package main
 
 const (
-        DEUCE = iota
-        THREE
-        FOUR
-        FIVE
-        SIX
-        SEVEN
-        EIGHT
-        NINE
-        TEN
-        JACK
-        QUEEN
+        ACE     = iota
         KING
-        ACE
+        QUEEN
+        JACK
+        TEN
+        NINE
+        EIGHT
+        SEVEN
+        SIX
+        FIVE
+        FOUR
+        THREE
+        DEUCE
 )
 
 const (
@@ -27,7 +27,7 @@ const (
         HIGH_CARD = iota
         PAIR
         TWO_PAIRS
-        THREE_OF_KIND
+        TRIPS
         STRAIGHT
         FLUSH
         FULL_HOUSE
@@ -36,49 +36,58 @@ const (
         ROYAL_FLUSH
 )
 
-const ( //                              A KQJT 9876 5432
-        STRAIGHT_ACE_HIGH       = 0B_0001_1111_0000_0000
-        STRAIGHT_KING_HIGH      = 0B_0000_1111_1000_0000
-        STRAIGHT_QUEEN_HIGH     = 0B_0000_0111_1100_0000
-        STRAIGHT_JACK_HIGH      = 0B_0000_0011_1110_0000
-        STRAIGHT_TEN_HIGH       = 0B_0000_0001_1111_0000
-        STRAIGHT_NINE_HIGH      = 0B_0000_0000_1111_1000
-        STRAIGHT_EIGHT_HIGH     = 0B_0000_0000_0111_1100
-        STRAIGHT_SEVEN_HIGH     = 0B_0000_0000_0011_1110
-        STRAIGHT_SIX_HIGH       = 0B_0000_0000_0001_1111
-        STRAIGHT_FIVE_HIGH      = 0B_0001_0000_0001_1111
+const (
+        FLOP  = 3
+        TURN  = 4
+        RIVER = 5
 )
 
 var CardRankShortName = []rune {
-        '2',
-        '3',
-        '4',
-        '5',
-        '6',
-        '7',
-        '8',
-        '9',
-        'T',
-        'J',
-        'Q',
-        'K',
         'A',
+        'K',
+        'Q',
+        'J',
+        'T',
+        '9',
+        '8',
+        '7',
+        '6',
+        '5',
+        '4',
+        '3',
+        '2',
 }
 
 var CardRankLongName = []string {
-        "Deuce",
-        "Three",
-        "Four",
-        "Five",
-        "Six",
-        "Seven",
-        "Eight",
-        "Nine",
-        "Ten",
-        "Jack",
-        "Queen",
-        "King",
         "Ace",
+        "King",
+        "Queen",
+        "Jack",
+        "Ten",
+        "Nine",
+        "Eight",
+        "Seven",
+        "Six",
+        "Five",
+        "Four",
+        "Three",
+        "Deuce",
+}
+
+var CardRankLongNamePlural = []string {
+        "Aces",
+        "Kings",
+        "Queens",
+        "Jacks",
+        "Tens",
+        "Nines",
+        "Eights",
+        "Sevens",
+        "Sixes",
+        "Fives",
+        "Fours",
+        "Threes",
+        "Deuces",
 }
 
 var CardSuitShortName = []rune {
@@ -115,6 +124,21 @@ var HandValueName = []string {
         "Royal flush",
 }
 
+var StraightTypes = []int {
+        //    2 3456 789T JQKA
+        0B_0000_0000_0001_1111,
+        0B_0000_0000_0011_1110,
+        0B_0000_0000_0111_1100,
+        0B_0000_0000_1111_1000,
+        0B_0000_0001_1111_0000,
+        0B_0000_0011_1110_0000,
+        0B_0000_0111_1100_0000,
+        0B_0000_1111_1000_0000,
+        0B_0001_1111_0000_0000,
+        0B_0001_1110_0000_0001,
+}
+
+
 type Card struct {
         Rank int
         Suit int
@@ -132,10 +156,22 @@ type Deck struct {
         Slots [52]bool
 }
 
+type CardCombination struct {
+        RankOfSuit     [4]int
+        NumOfSuit      [4]int
+        NumOfRank      [13]int
+        AllRanks       int
+}
+
 type HandValue struct {
+        Value           int
+        Flush           int
         Straight        int
-        Suits   [4]int
-        Ranks   [13]int
+        Quads           int
+        Trips           int
+        HighPair        int
+        LowPair         int
+        HighCard        [5]int
 }
 
 

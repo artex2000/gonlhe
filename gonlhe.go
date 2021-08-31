@@ -38,12 +38,14 @@ func test_random_card() {
 
 func test_random() {
         d := NewDeck()
-        for i := 0; i < 5; i += 1 {
+        for i := 0; i < 20; i += 1 {
                 if i > 0 {
                         d.Reset()
                 }
                 h := d.GetRandomHand()
                 b := d.GetRandomBoard()
                 fmt.Printf("I was dealt %s on %s board\n", h.GetShortName(), b.GetShortName())
+                hv := EvalHand(h, b, RIVER)
+                fmt.Printf("\t%s\n", hv.GetName())
         }
 }

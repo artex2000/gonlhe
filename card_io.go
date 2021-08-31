@@ -84,3 +84,29 @@ func (b *Board) GetShortName() string {
         }
         return sb.String()
 }
+
+func (hv *HandValue) GetName() string {
+        ValueName := HandValueName[hv.Value]
+        switch hv.Value {
+        case HIGH_CARD:
+                return fmt.Sprintf("%s, %s", ValueName, CardRankLongName[hv.HighCard[0]])
+        case PAIR:
+                return fmt.Sprintf("%s of %s", ValueName, CardRankLongNamePlural[hv.HighPair])
+        case TWO_PAIRS:
+                return fmt.Sprintf("%s, %s over %s", ValueName, CardRankLongNamePlural[hv.HighPair], CardRankLongNamePlural[hv.LowPair])   
+        case TRIPS:
+                return fmt.Sprintf("%s, %s", ValueName, CardRankLongNamePlural[hv.Trips]) 
+        case STRAIGHT:
+                return fmt.Sprintf("%s, %s high", ValueName, CardRankLongName[hv.Straight]) 
+        case FLUSH, STRAIGHT_FLUSH, ROYAL_FLUSH:
+                return fmt.Sprintf("%s", ValueName)
+        case FULL_HOUSE:
+                return fmt.Sprintf("%s, %s full of %s", ValueName, CardRankLongNamePlural[hv.Trips], CardRankLongNamePlural[hv.HighPair])
+        case QUADS:
+                return fmt.Sprintf("%s, %s", ValueName, CardRankLongNamePlural[hv.Quads]) 
+        }
+        return "<Unknown>"
+}
+
+
+

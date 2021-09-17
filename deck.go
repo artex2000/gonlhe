@@ -16,16 +16,6 @@ func (d *Deck) Reset() {
         }
 }
 
-func (d *Deck) Remove(c Card) {
-        idx := c.Suit * 13 + c.Rank
-        d.Slots[idx] = false
-}
-
-func (d *Deck) IsInDeck(c Card) bool {
-        idx := c.Suit * 13 + c.Rank
-        return d.Slots[idx]
-}
-
 func (c Card) IsInDeck(d *Deck) bool {
         idx := c.Suit * 13 + c.Rank
         return d.Slots[idx]
@@ -34,6 +24,14 @@ func (c Card) IsInDeck(d *Deck) bool {
 func (c Card) Remove(d *Deck) {
         idx := c.Suit * 13 + c.Rank
         d.Slots[idx] = false
+}
+
+func (h *Hand) IsInDeck(d *Deck) bool {
+        if h.Cards[0].IsInDeck(d) && h.Cards[1].IsInDeck(d) {
+                return true
+        } else {
+                return false
+        }
 }
 
 func (h *Hand) Remove(d *Deck) {
@@ -50,10 +48,10 @@ func (b *Board) Remove(d *Deck) {
 
 func (d *Deck) GetRandomCard() Card {
         for {
-                card := Card{rand.Intn(13), rand.Intn(4)}
-                if d.IsInDeck(card) {
-                        d.Remove(card)
-                        return card
+                c := Card{rand.Intn(13), rand.Intn(4)}
+                if c.IsInDeck(d) {
+                        c.Remove(d)
+                        return c
                 }
         }
         return Card{-1, -1}

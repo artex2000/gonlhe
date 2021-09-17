@@ -11,7 +11,8 @@ func main () {
         //test_input()
         //test_random_card()
         //test_random()
-        test_showdown()
+        //test_showdown()
+        test_range()
 }
 
 func test_input() {
@@ -89,3 +90,15 @@ func test_showdown() {
                 fmt.Println("---------")
         }
 }
+
+func test_range() {
+        for i := 0; i < 5; i += 1 {
+                r, err := InputRange();
+                if err != nil {
+                        fmt.Println("You're not serious, bye")
+                        return
+                }
+                fmt.Printf("Range: %s\n", r.GetShortName())
+        }
+}
+

@@ -14,6 +14,8 @@ const (
         FOUR
         THREE
         DEUCE
+
+        MAX_RANK
 )
 
 const (
@@ -21,6 +23,8 @@ const (
         HEARTS
         DIAMONDS
         CLUBS
+
+        MAX_SUIT
 )
 
 const (
@@ -46,6 +50,12 @@ const (
         WIN  = iota
         TIE
         LOSE
+)
+
+const (
+        SUITED  = iota
+        OFFSUIT
+        BOTH
 )
 
 var CardRankShortName = []rune {
@@ -180,5 +190,6 @@ type HandValue struct {
         HighCard        [5]int
 }
 
+type Range []*Hand
 
 

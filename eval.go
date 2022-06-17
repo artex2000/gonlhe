@@ -1,6 +1,12 @@
 package main
 
-func EvalHand(h *Hand, b *Board, s int) *HandValue {
+func EvaluateHand(h *Hand, b *Board, s int) *HandValue {
+
+        c := MergeHand(h, b, s)
+        return EvaluateCombination(c)
+}
+
+func MergeHand(h *Hand, b *Board, s int) *CardCombination {
         c := &CardCombination{}
         r := h.Cards[0]
         c.NumOfSuit[r.Suit] += 1
@@ -22,11 +28,10 @@ func EvalHand(h *Hand, b *Board, s int) *HandValue {
         for _, v := range c.RankOfSuit {
                 c.AllRanks |= v
         }
-
-        return EvalCombination(c)
+        return c
 }
 
-func EvalCombination(c *CardCombination) *HandValue {
+func EvaluateCombination(c *CardCombination) *HandValue {
         hv := &HandValue{} 
         s, t := CheckStraightFlush(c)
         if s != -1 {    //we have straight flush
@@ -217,6 +222,8 @@ func Showdown(hero *HandValue, vill *HandValue) int {
         }
 
         switch hero.Value {
+        case ROYAL_FLUSH:
+                return TIE              //we have royal flush on board
         case STRAIGHT_FLUSH, STRAIGHT:
                 if hero.Straight < vill.Straight {
                         return WIN

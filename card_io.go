@@ -44,6 +44,24 @@ func InputHand() (*Hand, error) {
         return h, nil
 }
 
+func InputBoard() (*Board, error) {
+        b := &Board{}
+        var s [5]string
+        var err error
+
+        fmt.Print("Enter board: ")
+        fmt.Scanln(&s[0], &s[1], &s[2], &s[3], &s[4])
+
+        for i := 0; i < 5; i += 1 {
+                b.Cards[i], err = StringToCard(s[i])
+                if err != nil {
+                        fmt.Println(err)
+                        return b, err
+                }
+        }
+        return b, nil
+}
+
 func InputRange() (Range, error) {
         var s string
 
@@ -280,5 +298,17 @@ func (hv *HandValue) GetName() string {
         return "<Unknown>"
 }
 
+func (c *CardCombination) GetName() string {
+        var sb strings.Builder
+        for i, v := range c.NumOfSuit {
+                sb.WriteString(fmt.Sprintf("%s - %d\n", CardSuitLongName[i], v))
+        }
+        for i, v := range c.NumOfRank {
+                if v > 0 {
+                        sb.WriteString(fmt.Sprintf("%s - %d\n", CardRankLongNamePlural[i], v))
+                }
+        }
+        return sb.String()
+}
 
 

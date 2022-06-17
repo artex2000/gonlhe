@@ -192,4 +192,10 @@ type HandValue struct {
 
 type Range []*Hand
 
+type Outcome struct {
+        Wins int
+        Ties int
+        Loss int
+}
+
 
